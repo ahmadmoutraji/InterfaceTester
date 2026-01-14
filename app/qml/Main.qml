@@ -43,19 +43,28 @@ ApplicationWindow {
 
             RowLayout {
                 anchors.fill: parent
-                anchors.margins: 16
+                anchors.margins: 5
                 spacing: 12
 
+                Item {
+                    Layout.fillWidth: true
+                }
+
                 Label {
-                    text: "Primary IP"
+                    text: "Primary IP: "
                     color: root.mutedTextColor
-                    font.pixelSize: 14
+                    font.pixelSize: 22
+                    horizontalAlignment: Text.AlignHCenter
                 }
                 Label {
                     text: networkInfo.primaryIp
                     color: root.textColor
                     font.pixelSize: 20
                     font.weight: Font.DemiBold
+                    horizontalAlignment: Text.AlignHCenter
+                }
+                Item {
+                    Layout.fillWidth: true
                 }
             }
         }
