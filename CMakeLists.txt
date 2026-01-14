@@ -17,6 +17,8 @@ qt_add_executable(appInterfaceTester
     core/NetworkInfo.cpp
     core/NetworkInfo.h
     core/ITestCase.h
+    tests/DisplayTestCase.cpp
+    tests/DisplayTestCase.h
     tests/LanTestCase.cpp
     tests/LanTestCase.h
     tests/TemperatureTestCase.cpp

@@ -24,9 +24,11 @@ public slots:
     void startLanTest();
     void startTemperatureTest();
     void startDisplayTest();
+    void submitDisplayResponse(bool sawRed);
 
 signals:
     void resultsTextChanged();
+    void displayPromptRequested(const QString &colorName, const QString &colorHex);
 
 private:
     void runTest(const QString &testName);
@@ -36,4 +38,5 @@ private:
     QVector<ITestCase *> m_tests;
     QString m_resultsText;
     Logger m_logger;
+    class DisplayTestCase *m_displayTest;
 };

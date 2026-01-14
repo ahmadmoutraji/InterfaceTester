@@ -28,6 +28,29 @@ ApplicationWindow {
         }
     }
 
+    property bool displayPromptVisible: false
+    property bool displayQuestionVisible: false
+    property string displayColorHex: "#ff0000"
+    property string displayColorName: "Red"
+
+    Timer {
+        id: displayPromptTimer
+        interval: 1000
+        repeat: false
+        onTriggered: displayQuestionVisible = true
+    }
+
+    Connections {
+        target: testManager
+        function onDisplayPromptRequested(colorName, colorHex) {
+            displayPromptVisible = true
+            displayQuestionVisible = false
+            displayColorName = colorName
+            displayColorHex = colorHex
+            displayPromptTimer.restart()
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: 16
@@ -139,6 +162,66 @@ ApplicationWindow {
                         radius: 8
                         border.color: root.outlineColor
                         border.width: 1
+                    }
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        color: displayColorHex
+        visible: displayPromptVisible
+        z: 10
+
+        Rectangle {
+            width: parent.width * 0.7
+            height: 200
+            radius: 12
+            color: "#10161c"
+            anchors.centerIn: parent
+            visible: displayQuestionVisible
+
+            ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: 24
+                spacing: 16
+
+                Label {
+                    text: "Do you see a solid " + displayColorName.toLowerCase() + " screen?"
+                    color: root.textColor
+                    font.pixelSize: 20
+                    font.weight: Font.DemiBold
+                    horizontalAlignment: Text.AlignHCenter
+                    Layout.fillWidth: true
+                    wrapMode: Text.Wrap
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 16
+
+                    Button {
+                        text: "Yes"
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 44
+                        onClicked: {
+                            displayPromptVisible = false
+                            displayQuestionVisible = false
+                            displayPromptTimer.stop()
+                            testManager.submitDisplayResponse(true)
+                        }
+                    }
+                    Button {
+                        text: "No"
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 44
+                        onClicked: {
+                            displayPromptVisible = false
+                            displayQuestionVisible = false
+                            displayPromptTimer.stop()
+                            testManager.submitDisplayResponse(false)
+                        }
                     }
                 }
             }

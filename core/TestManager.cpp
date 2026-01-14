@@ -1,21 +1,26 @@
 #include "TestManager.h"
 
+#include "tests/DisplayTestCase.h"
 #include "tests/LanTestCase.h"
 #include "tests/StubTestCase.h"
 #include "tests/TemperatureTestCase.h"
 #include <QDateTime>
 
 TestManager::TestManager(QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_displayTest(nullptr)
 {
     m_tests.append(new StubTestCase("Test LED", true, this));
     m_tests.append(new LanTestCase(&m_logger, this));
     m_tests.append(new TemperatureTestCase(&m_logger, this));
-    m_tests.append(new StubTestCase("Test Display", true, this));
+    m_displayTest = new DisplayTestCase(&m_logger, this);
+    m_tests.append(m_displayTest);
 
     for (ITestCase *test : m_tests) {
         connect(test, &ITestCase::finished, this, &TestManager::handleFinished);
     }
+
+    connect(m_displayTest, &DisplayTestCase::promptRequested, this, &TestManager::displayPromptRequested);
 }
 
 TestManager::~TestManager() = default;
@@ -43,6 +48,14 @@ void TestManager::startTemperatureTest()
 void TestManager::startDisplayTest()
 {
     runTest("Test Display");
+}
+
+void TestManager::submitDisplayResponse(bool sawRed)
+{
+    if (!m_displayTest) {
+        return;
+    }
+    m_displayTest->submitUserResponse(sawRed);
 }
 
 void TestManager::runTest(const QString &testName)
