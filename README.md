@@ -68,3 +68,6 @@ See `docs/Logging.md` for full details.
 
 ## Network selection
 See `docs/Network.md` for selection rules and polling strategy.
+
+## GUI image
+![Interface Tester GUI](docs/images/GUI.png)
