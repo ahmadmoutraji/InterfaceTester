@@ -4,6 +4,7 @@
 #include <QQuickStyle>
 
 #include "core/TestManager.h"
+#include "core/NetworkInfo.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +14,9 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     TestManager testManager;
+    NetworkInfo networkInfo;
     engine.rootContext()->setContextProperty("testManager", &testManager);
+    engine.rootContext()->setContextProperty("networkInfo", &networkInfo);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,

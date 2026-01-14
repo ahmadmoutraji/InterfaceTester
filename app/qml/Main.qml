@@ -52,7 +52,7 @@ ApplicationWindow {
                     font.pixelSize: 14
                 }
                 Label {
-                    text: "Not Available"
+                    text: networkInfo.primaryIp
                     color: root.textColor
                     font.pixelSize: 20
                     font.weight: Font.DemiBold

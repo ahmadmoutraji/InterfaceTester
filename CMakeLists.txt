@@ -4,7 +4,7 @@ project(InterfaceTester VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Core QuickControls2)
+find_package(Qt6 REQUIRED COMPONENTS Quick Core QuickControls2 Network)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -14,6 +14,8 @@ qt_add_executable(appInterfaceTester
     core/TestManager.h
     core/Logger.cpp
     core/Logger.h
+    core/NetworkInfo.cpp
+    core/NetworkInfo.h
     core/ITestCase.h
     tests/StubTestCase.cpp
     tests/StubTestCase.h
@@ -37,7 +39,7 @@ set_target_properties(appInterfaceTester PROPERTIES
 )
 
 target_link_libraries(appInterfaceTester
-    PRIVATE Qt6::Quick  Qt6::Core Qt6::QuickControls2
+    PRIVATE Qt6::Quick  Qt6::Core Qt6::QuickControls2 Qt6::Network
 )
 
 target_include_directories(appInterfaceTester
