@@ -12,6 +12,8 @@ qt_add_executable(appInterfaceTester
     app/main.cpp
     core/TestManager.cpp
     core/TestManager.h
+    core/Logger.cpp
+    core/Logger.h
     core/ITestCase.h
     tests/StubTestCase.cpp
     tests/StubTestCase.h

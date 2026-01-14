@@ -1,7 +1,6 @@
 #include "TestManager.h"
 
 #include "tests/StubTestCase.h"
-
 #include <QDateTime>
 
 TestManager::TestManager(QObject *parent)
@@ -46,6 +45,8 @@ void TestManager::startDisplayTest()
 
 void TestManager::runTest(const QString &testName)
 {
+    m_logger.logTestEvent(testName, QStringLiteral("Test started"));
+
     for (ITestCase *test : m_tests) {
         if (test->name() == testName) {
             test->start();
@@ -56,6 +57,9 @@ void TestManager::runTest(const QString &testName)
 
 void TestManager::handleFinished(const QString &testName, bool passed)
 {
+    m_logger.logTestEvent(testName, QStringLiteral("Test finished: %1")
+        .arg(passed ? QStringLiteral("Pass") : QStringLiteral("Fail")));
+
     const QString line = formatResultLine(testName, passed);
     if (!m_resultsText.isEmpty()) {
         m_resultsText.append('\n');

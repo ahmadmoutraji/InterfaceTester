@@ -4,6 +4,8 @@
 #include <QString>
 #include <QVector>
 
+#include "core/Logger.h"
+
 class ITestCase;
 
 class TestManager : public QObject
@@ -33,4 +35,5 @@ private:
 
     QVector<ITestCase *> m_tests;
     QString m_resultsText;
+    Logger m_logger;
 };
