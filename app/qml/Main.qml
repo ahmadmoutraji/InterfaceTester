@@ -32,6 +32,7 @@ ApplicationWindow {
     property bool displayQuestionVisible: false
     property string displayColorHex: "#ff0000"
     property string displayColorName: "Red"
+    property bool ledPromptVisible: false
 
     Timer {
         id: displayPromptTimer
@@ -48,6 +49,9 @@ ApplicationWindow {
             displayColorName = colorName
             displayColorHex = colorHex
             displayPromptTimer.restart()
+        }
+        function onLedPromptRequested() {
+            ledPromptVisible = true
         }
     }
 
@@ -221,6 +225,63 @@ ApplicationWindow {
                             displayQuestionVisible = false
                             displayPromptTimer.stop()
                             testManager.submitDisplayResponse(false)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        visible: ledPromptVisible
+        color: "#10161c"
+        z: 11
+
+        Rectangle {
+            width: parent.width * 0.7
+            height: 200
+            radius: 12
+            color: "#0f141a"
+            border.color: root.outlineColor
+            border.width: 1
+            anchors.centerIn: parent
+
+            ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: 24
+                spacing: 16
+
+                Label {
+                    text: "Did the LED turn on?"
+                    color: root.textColor
+                    font.pixelSize: 20
+                    font.weight: Font.DemiBold
+                    horizontalAlignment: Text.AlignHCenter
+                    Layout.fillWidth: true
+                    wrapMode: Text.Wrap
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 16
+
+                    Button {
+                        text: "Yes"
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 44
+                        onClicked: {
+                            ledPromptVisible = false
+                            testManager.submitLedResponse(true)
+                        }
+                    }
+                    Button {
+                        text: "No"
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 44
+                        onClicked: {
+                            ledPromptVisible = false
+                            testManager.submitLedResponse(false)
                         }
                     }
                 }

@@ -25,10 +25,12 @@ public slots:
     void startTemperatureTest();
     void startDisplayTest();
     void submitDisplayResponse(bool sawRed);
+    void submitLedResponse(bool ledOk);
 
 signals:
     void resultsTextChanged();
     void displayPromptRequested(const QString &colorName, const QString &colorHex);
+    void ledPromptRequested();
 
 private:
     void runTest(const QString &testName);
@@ -39,4 +41,5 @@ private:
     QString m_resultsText;
     Logger m_logger;
     class DisplayTestCase *m_displayTest;
+    class LedTestCase *m_ledTest;
 };
