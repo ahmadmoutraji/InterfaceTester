@@ -2,6 +2,7 @@
 
 #include "tests/LanTestCase.h"
 #include "tests/StubTestCase.h"
+#include "tests/TemperatureTestCase.h"
 #include <QDateTime>
 
 TestManager::TestManager(QObject *parent)
@@ -9,7 +10,7 @@ TestManager::TestManager(QObject *parent)
 {
     m_tests.append(new StubTestCase("Test LED", true, this));
     m_tests.append(new LanTestCase(&m_logger, this));
-    m_tests.append(new StubTestCase("Test Temperature", true, this));
+    m_tests.append(new TemperatureTestCase(&m_logger, this));
     m_tests.append(new StubTestCase("Test Display", true, this));
 
     for (ITestCase *test : m_tests) {
