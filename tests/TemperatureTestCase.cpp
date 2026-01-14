@@ -43,50 +43,32 @@ void TemperatureTestCase::start()
 
 bool TemperatureTestCase::readTemperatureCelsius(double &valueC) const
 {
-    QDir thermalDir(kThermalPath);
-    if (!thermalDir.exists()) {
+    const QString tempPath = QStringLiteral("%1/thermal_zone0/temp").arg(kThermalPath);
+    QFile tempFile(tempPath);
+    if (!tempFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         if (m_logger) {
-            m_logger->logTestEvent(name(), QStringLiteral("thermal path missing: %1").arg(kThermalPath));
+            m_logger->logTestEvent(name(), QStringLiteral("failed to open %1").arg(tempPath));
         }
         return false;
     }
 
-    const QStringList entries = thermalDir.entryList(QStringList() << QStringLiteral("thermal_zone*"),
-                                                     QDir::Dirs | QDir::NoDotAndDotDot);
-    if (entries.isEmpty()) {
+    const QString raw = QString::fromLocal8Bit(tempFile.readAll()).trimmed();
+    bool ok = false;
+    const double value = raw.toDouble(&ok);
+    if (!ok) {
         if (m_logger) {
-            m_logger->logTestEvent(name(), QStringLiteral("no thermal_zone entries"));
+            m_logger->logTestEvent(name(), QStringLiteral("invalid temp value: %1").arg(raw));
         }
         return false;
     }
 
-    for (const QString &zone : entries) {
-        const QString tempPath = thermalDir.filePath(zone + QStringLiteral("/temp"));
-        QFile tempFile(tempPath);
-        if (!tempFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            continue;
-        }
-
-        const QString raw = QString::fromLocal8Bit(tempFile.readAll()).trimmed();
-        bool ok = false;
-        const double value = raw.toDouble(&ok);
-        if (!ok) {
-            continue;
-        }
-
-        const double celsius = (value > 1000.0) ? value / 1000.0 : value;
-        valueC = celsius;
-        if (m_logger) {
-            m_logger->logTestEvent(name(), QStringLiteral("sensor=%1 raw=%2 celsius=%3")
-                .arg(zone, raw, QString::number(celsius, 'f', 2)));
-        }
-        return true;
-    }
-
+    const double celsius = (value > 1000.0) ? value / 1000.0 : value;
+    valueC = celsius;
     if (m_logger) {
-        m_logger->logTestEvent(name(), QStringLiteral("no readable temp sensors"));
+        m_logger->logTestEvent(name(), QStringLiteral("sensor=thermal_zone0 raw=%1 celsius=%2")
+            .arg(raw, QString::number(celsius, 'f', 2)));
     }
-    return false;
+    return true;
 }
 
 void TemperatureTestCase::finish(bool passed, const QString &reason)

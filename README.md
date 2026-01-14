@@ -46,9 +46,9 @@ cmake --build build
 - Logs interface state, IPv4s, and ping output
 
 ### Temperature test
-- Reads from `/sys/class/thermal/thermal_zone*/temp`
+- Reads from `/sys/class/thermal/thermal_zone0/temp`
 - Converts to Celsius and compares to 85.0 C max (industrial)
-- Logs raw values and chosen sensor
+- Logs raw value for `thermal_zone0`
 
 ### Display test
 - Shows full-screen Red, then Green, then Blue
@@ -68,4 +68,3 @@ See `docs/Logging.md` for full details.
 
 ## Network selection
 See `docs/Network.md` for selection rules and polling strategy.
-
