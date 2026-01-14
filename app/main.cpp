@@ -1,6 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QQuickStyle>
+
+#include "core/TestManager.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +12,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+    TestManager testManager;
+    engine.rootContext()->setContextProperty("testManager", &testManager);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,

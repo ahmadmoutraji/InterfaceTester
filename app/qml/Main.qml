@@ -16,6 +16,18 @@ ApplicationWindow {
     property color mutedTextColor: "#9aa7b2"
     property color outlineColor: "#26313b"
 
+    function startTest(action) {
+        if (action === "led") {
+            testManager.startLedTest()
+        } else if (action === "lan") {
+            testManager.startLanTest()
+        } else if (action === "temp") {
+            testManager.startTemperatureTest()
+        } else if (action === "display") {
+            testManager.startDisplayTest()
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: 16
@@ -53,14 +65,20 @@ ApplicationWindow {
             spacing: 12
 
             Repeater {
-                model: ["Test LED", "Test LAN", "Test Temperature", "Test Display"]
+                model: [
+                    { label: "Test LED", action: "led" },
+                    { label: "Test LAN", action: "lan" },
+                    { label: "Test Temperature", action: "temp" },
+                    { label: "Test Display", action: "display" }
+                ]
                 delegate: Button {
                     id: testButton
-                    text: modelData
+                    text: modelData.label
                     Layout.fillWidth: true
                     Layout.preferredHeight: 48
                     font.pixelSize: 14
                     font.weight: Font.Medium
+                    onClicked: root.startTest(modelData.action)
 
                     background: Rectangle {
                         color: testButton.down ? "#1e2a33" : root.panelColor
@@ -106,13 +124,13 @@ ApplicationWindow {
                     readOnly: true
                     wrapMode: TextArea.Wrap
                     color: root.textColor
+                    text: testManager.resultsText
                     background: Rectangle {
                         color: "#12181f"
                         radius: 8
                         border.color: root.outlineColor
                         border.width: 1
                     }
-                    text: "Results will appear here."
                 }
             }
         }

@@ -10,6 +10,11 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appInterfaceTester
     app/main.cpp
+    core/TestManager.cpp
+    core/TestManager.h
+    core/ITestCase.h
+    tests/StubTestCase.cpp
+    tests/StubTestCase.h
 )
 
 qt_add_qml_module(appInterfaceTester
@@ -31,6 +36,10 @@ set_target_properties(appInterfaceTester PROPERTIES
 
 target_link_libraries(appInterfaceTester
     PRIVATE Qt6::Quick  Qt6::Core Qt6::QuickControls2
+)
+
+target_include_directories(appInterfaceTester
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 include(GNUInstallDirs)
